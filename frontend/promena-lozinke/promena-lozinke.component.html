@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #28a745;">
+  <div class="container d-flex justify-content-between align-items-center">
+    <h1 class="mb-0 text-white">Vaša mašta vaša bašta</h1>
+    <button class="btn btn-light" (click)="goBack()">Nazad</button>
+  </div>
+</nav>
+<header>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center mb-4 text-white">Promena Lozinke</h2>
+      <form>
+        <div class="form-group">
+          <label for="oldPassword" class="text-white">Stara Lozinka</label>
+          <input type="password" class="form-control" id="oldPassword" placeholder="Unesite staru lozinku" [(ngModel)]="oldPassword" name="oldPassword">
+        </div>
+        <div class="form-group">
+          <label for="newPassword" class="text-white">Nova Lozinka</label>
+          <input type="password" class="form-control" id="newPassword" placeholder="Unesite novu lozinku" [(ngModel)]="newPassword" name="newPassword">
+        </div>
+        <div class="form-group">
+          <label for="confirmNewPassword" class="text-white">Potvrdite Novu Lozinku</label>
+          <input type="password" class="form-control" id="confirmNewPassword" placeholder="Potvrdite novu lozinku" [(ngModel)]="confirmPassword" name="confirmPassword">
+        </div>
+        <div>
+          <p class="text-red">{{ message }}</p>
+        </div>
+        <br/>
+
+        <button type="submit" class="btn btn-primary btn-block" (click)="potvrdi()">Potvrdi</button>
+      </form>
+    </div>
+  </div>
+</header>

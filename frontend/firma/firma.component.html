@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaša mašta vaša bašta</title>
+    <style>
+        .wider-input {
+            width: 100%; /* Makes the input fields full width */
+        }
+
+        .table th,
+        .table td {
+            text-align: left; /* Align text to the left */
+            white-space: nowrap; /* Prevents text wrapping */
+        }
+
+        .table th {
+            width: 50%; /* Optional: Set fixed width for better alignment */
+        }
+
+        .list-group-item {
+            padding-left: 15px; /* Optional: Add some left padding for list items */
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #28a745;">
+  <div class="container d-flex justify-content-between align-items-center">
+    <h1 class="mb-0 text-white">Vaša mašta vaša bašta</h1>
+    <div class="d-flex align-items-center">
+      <!-- <ul class="navbar-nav mr-3 d-flex align-items-center">
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="/profil">Profil</a>
+        </li>
+        <div class="vr mx-2" style="border-left: 1px solid white; height: 40px;"></div>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="/firme">Firme</a>
+        </li>
+        <div class="vr mx-2" style="border-left: 1px solid white; height: 40px;"></div>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="/zakazivanja">Zakazivanja</a>
+        </li>
+      </ul> -->
+      <div style=" height: 40px;">
+        <button (click)="nazad()" class="btn btn-light">Nazad</button>
+      </div>
+      <div class="vr mx-3" style="border-left: 1px solid white; height: 40px;"></div>
+      <div class="d-flex align-items-center">
+        <a routerLink="/promenaLozinke" class="text-white mr-3">Promeni lozinku</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+      <div style="height: 40px;">
+        <button (click)="logout()" class="btn btn-light">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row justify-content-left">
+    <div class="col-md-8">
+      <h2>{{ firma.name }}</h2>
+      <p><strong>Adresa:</strong> {{ firma.address }}</p>
+      <h3>Usluge</h3>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th class="text-left">Ime usluge</th>
+            <th class="text-left">Cena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let service of firma.services">
+            <td class="text-left">{{ service.name }}</td>
+            <td class="text-left">{{ service.price }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>{{ firma.contact }}</p>
+    </div>
+  </div>
+
+  <!-- Zakazivanje Form -->
+  <div class="row justify-content-left mt-4">
+    <div class="col-md-8">
+      <h3>Zakazivanje</h3>
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="date">Datum</label>
+          <input type="datetime-local" id="date" class="form-control" [(ngModel)]="zakazivanje.startDate" name="date" required>
+        </div>
+        <div class="form-group">
+          <label for="kvadratura">Kvadratura bašte (m²)</label>
+          <input type="number" id="kvadratura" class="form-control" [(ngModel)]="zakazivanje.kvadratura" name="kvadratura" required>
+        </div>
+        <div class="form-group">
+          <label>Tip bašte</label>
+          <div class="form-check">
+            <input type="radio" id="privatna" class="form-check-input" [(ngModel)]="zakazivanje.tip" name="tip" value="privatna" required style="background-color:#28a745;">
+            <label for="privatna" class="form-check-label">Privatna bašta</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="restoran" class="form-check-input" [(ngModel)]="zakazivanje.tip" name="tip" value="restoran" required style="background-color:#28a745;">
+            <label for="restoran" class="form-check-label">Restoran</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" *ngIf="!prviKorak" style="background-color: #28a745;">Dalje</button>
+        <div *ngIf="prviKorak == true">
+          <div *ngIf="zakazivanje.tip === 'privatna'">
+          <div class="form-group">
+            <label for="povrsinaBazena">Površina bazena (m²)</label>
+            <input type="number" id="povrsinaBazena" class="form-control" [(ngModel)]="zakazivanje.povrsinaBazena" name="povrsinaBazena" required>
+          </div>
+          <div class="form-group">
+            <label for="povrsinaZelenilo">Površina zelenila (m²)</label>
+            <input type="number" id="povrsinaZelenilo" class="form-control" [(ngModel)]="zakazivanje.povrsinaZelenilo" name="povrsinaZelenilo" required>
+          </div>
+          <div class="form-group">
+            <label for="povrsinaLezaljke">Površina ležaljki i stolova (m²)</label>
+            <input type="number" id="povrsinaLezaljke" class="form-control" [(ngModel)]="zakazivanje.povrsinaLezaljke" name="povrsinaLezaljke" required>
+          </div>
+        </div>
+
+        <!-- Additional Inputs for Restoran -->
+        <div *ngIf="zakazivanje.tip === 'restoran'">
+          <div class="form-group">
+            <label for="povrsinaFontane">Površina fontane (m²)</label>
+            <input type="number" id="povrsinaFontane" class="form-control" [(ngModel)]="zakazivanje.povrsinaFontane" name="povrsinaFontane" required>
+          </div>
+          <div class="form-group">
+            <label for="povrsinaZelenilo">Površina zelenila (m²)</label>
+            <input type="number" id="povrsinaZelenilo" class="form-control" [(ngModel)]="zakazivanje.povrsinaZelenilo" name="povrsinaZelenilo" required>
+          </div>
+          <div class="form-group">
+            <label for="brojStolova">Broj stolova</label>
+            <input type="number" id="brojStolova" class="form-control" [(ngModel)]="zakazivanje.brojStolova" name="brojStolova" required>
+          </div>
+          <div class="form-group">
+            <label for="brojStolica">Broj stolica</label>
+            <input type="number" id="brojStolica" class="form-control" [(ngModel)]="zakazivanje.brojStolica" name="brojStolica" required>
+          </div>
+        </div>
+        </div>
+        <!-- Additional Inputs for Privatna Bašta -->
+        <table class="table table-striped table-bordered" *ngIf="prviKorak == true">
+          <thead>
+            <tr>
+              <th class="text-left">Ime usluge</th>
+              <th class="text-left">Cena</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of firma.services">
+              <td class="text-left">{{ service.name }}</td>
+              <td class="text-left">{{ service.price }}</td>
+              <td class="text-left"> <input type="checkbox" (click)="checkbox(service)"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="form-group mt-4" *ngIf="prviKorak == true">
+          <label for="napomena">Napomena</label>
+          <textarea id="napomena" class="form-control" [(ngModel)]="zakazivanje.napomena" name="napomena" rows="4"></textarea>
+        </div>
+        <div class="mt-4" *ngIf="prviKorak == true">
+          <button (click)="sendZakazivanje()" class="btn btn-success">Pošalji Zakazivanje</button>
+        </div>
+        <!-- File input for JSON upload -->
+        <div class="mb-3">
+          <label for="jsonFile" class="form-label">Upload JSON File</label>
+          <input type="file" id="jsonFile" class="form-control" (change)="onFileSelected($event)">
+        </div>
+
+        <!-- Canvas to display the garden design -->
+        <canvas id="gardenCanvas" width="600" height="400" style="border:1px solid #000"></canvas>
+
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

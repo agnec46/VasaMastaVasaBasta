@@ -1,0 +1,99 @@
+<!-- start-page.component.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="pocetna.component.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header bg-success text-white py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">Vaša mašta vaša bašta</h1>
+            <div>
+                <a href="/login" class="btn btn-light mx-2">Login</a>
+                <a href="javascript:void(0)" (click)="register()" class="btn btn-light mx-2">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Statistika</h2>
+        <form>
+            <div class="form-group row">
+                <label for="brojBasta" class="col-sm-2 col-form-label"><b>Broj uredjenih bašta</b></label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="brojBasta" [(ngModel)]="brojBasta" name="brojBasta">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="brojVlasnika" class="col-sm-2 col-form-label"><b>Broj vlasnika</b></label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="brojVlasnika" [(ngModel)]="brojVlasnika" name="brojVlasnika">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="brojDekoratera" class="col-sm-2 col-form-label"><b>Broj dekoratera</b></label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="brojDekoratera" [(ngModel)]="brojDekoratera" name="brojDekoratera">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="brojPoslova24" class="col-sm-2 col-form-label"><b>Broj poslova (24h)</b></label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="brojPoslova24" [(ngModel)]="brojPoslova24" name="brojPoslova24">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="brojPoslova7" class="col-sm-2 col-form-label"><b>Broj poslova (7d)</b></label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="brojPoslova7" [(ngModel)]="brojPoslova7" name="brojPoslova7">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="brojPoslova30" class="col-sm-2 col-form-label"><b>Broj poslova (30d)</b></label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="brojPoslova30" [(ngModel)]="brojPoslova30" name="brojPoslova30">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="firme" class="col-sm-2 col-form-label"><b>Firme</b></label>
+                <div class="col-sm-10">
+                  <div class="mb-3">
+                    <input type="text" class="form-control mb-2" placeholder="Name" [(ngModel)]="searchName" name="searchName">
+                    <input type="text" class="form-control mb-2" placeholder="Address" [(ngModel)]="searchAddress" name="searchAddress">
+                    <button class="btn btn-primary" (click)="searchFirme()">Pretrazi firme</button>
+                  </div>
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th (click)="toggleSort('name')">Name</th>
+                              <th (click)="toggleSort('address')">Address</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let firma of filteredFirme">
+                              <td><b>{{ firma.name }}</b></td>
+                              <td>{{ firma.address }}</td>
+                              <td>
+                                  <ul class="list-group mt-2">
+                                      <li class="list-group-item" *ngFor="let worker of firma.workers">
+                                          {{ getUserFullName(worker.toString()) }}
+                                      </li>
+                                  </ul>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
